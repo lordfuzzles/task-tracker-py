@@ -1,19 +1,6 @@
-task_list = {
-  "tasks": [
-    {
-      "id": 1,
-      "name": "Build Lab",
-      "status": "Not Started",
-      "dueDate": "11/15/2025"
-    },
-    {
-      "id": 2,
-      "name": "Image Computer",
-      "status": "Not Started",
-      "dueDate": "11/20/2025"
-    }
-  ]
-}
+import json
+
+list_file = "./tasks.json"
 
 new_entry = {
     "name": "Test",
@@ -21,8 +8,16 @@ new_entry = {
     "dueDate": "11/30/2025"
 }
 
-print(len(task_list["tasks"]))
+def open_task_list(list):
+    with open(list, mode='r') as read_file:
+        list_data = json.load(read_file)
+    
+    return list_data
 
-new_entry = {"id": len(task_list["tasks"]) + 1} | new_entry
+task_list = open_task_list(list_file)
 
-print(new_entry)
+test_task_number = "2"
+
+test_task = task_list["tasks"][int(test_task_number) - 1]
+
+print(test_task["name"])
