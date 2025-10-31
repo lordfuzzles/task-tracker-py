@@ -47,7 +47,6 @@ def print_list():
     
 
 def add_task_menu():
-
     os.system("clear")
     task_name = input("What is the name of the task?\n\n> ")
     task_status = input("Have you started this task already?\n\n> ")
@@ -84,7 +83,6 @@ def add_task_menu():
     return_main()
 
 def add_task(task_to_add, list):
-
     task_list = open_task_list(list_file)
     task_to_add = {"id": len(task_list['tasks']) + 1} | task_to_add
     task_list['tasks'].append(task_to_add)
@@ -95,7 +93,6 @@ def add_task(task_to_add, list):
     print(f"Task {task_to_add['name']} added to tasks list.")
 
 def edit_task_menu():
-
     task_list = open_task_list(list_file)
 
     os.system("clear")
@@ -108,7 +105,6 @@ def edit_task_menu():
 
 
 def remove_task():
-    
     task_list = open_task_list(list_file)
 
     os.system("clear")
@@ -132,7 +128,6 @@ def remove_task():
     return_main()
 
 def open_task_list(list):
-
     with open(list, mode='r') as file:
         list_data = json.load(file)
     
