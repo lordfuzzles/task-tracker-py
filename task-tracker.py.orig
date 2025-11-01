@@ -1,3 +1,5 @@
+# Original version of this tracker. Kept for reference
+
 import json,os,shutil
 
 list_file = "./tasks.json"
@@ -6,24 +8,23 @@ def main():
     while True:
         try:
             with open(list_file, 'r') as file:
-                task_list = json.load(file)
+                pass
         except FileNotFoundError:
-            os.system('echo "tasks": [] > ./tasks.json')
-            task_list = []
+            os.system('echo "tasks": [] > ./tasks.json') 
         
         os.system("clear")
 
         test = input("What would you like to do?\n1. Print Tasks List\n2. Add Task\n3. Edit Task\n4. Remove Task\n5. Exit\n\n> ")
         match test:
             case '1':
-                print_list(task_list)
+                print_list()
                 return_main()
             case '2':
-                add_task_menu(task_list)
+                add_task_menu()
             case '3':
-                edit_task_menu(task_list)
+                edit_task_menu()
             case '4':
-                remove_task(task_list)
+                remove_task()
             case '5':
                 exit()
             case _:
@@ -36,27 +37,27 @@ def return_main():
     input("Press any key to return to the menu...")
     
 # Prints out list of tasks in order along with status and due date
-def print_list(t_list):
+def print_list(t_list=list_file):
     os.system("clear")
     print(f"""************************
 *- Current Tasks List -*
 ************************""")
-    task_list = t_list
+    task_list = open_task_list(list_file) if t_list == list_file else t_list
     
     for item in task_list['tasks']:
         print(f"{item['id']}. {item['name']} - Status: {item['status']} - Due: {item['dueDate']}")
     
 # Menu for setting up a task for adding    
-def add_task_menu(t_list):
+def add_task_menu():
     os.system("clear")
     task_name = input("What is the name of the task?\n\n> ")
-    task_status = input("Have you started this task already? (y/n)\n\n> ")
+    task_status = input("Have you started this task already?\n\n> ")
     task_due_date = ""
 
     match task_status[:1].lower():
         case "n":
             task_status = "Not started"
-            task_due_date = input("When do you need to have this task done? (y/n)\n\n> ")
+            task_due_date = input("When do you need to have this task done?\n\n> ")
         case "y":
             if input("Have you already completed this task?\n\n> ")[:1].lower() == "n":
                 task_status = "In Progress"
@@ -79,23 +80,23 @@ def add_task_menu(t_list):
         "dueDate":task_due_date
     }
 
-    add_task(new_task, t_list)
+    add_task(new_task, list_file)
 
     return_main()
 
 # Function that adds the new task to the task.json file
-def add_task(task_to_add, t_list):
-    task_list = t_list
+def add_task(task_to_add, list):
+    task_list = open_task_list(list_file)
     task_to_add = {"id": len(task_list['tasks']) + 1} | task_to_add
     task_list['tasks'].append(task_to_add)
 
-    with open(list_file, mode='w') as file:
+    with open(list, mode='w') as file:
         json.dump(task_list, file, indent=2)
 
     print(f"Task {task_to_add['name']} added to tasks list.")
 
-def edit_task_menu(t_list):
-    task_list = t_list
+def edit_task_menu():
+    task_list = open_task_list(list_file)
 
     while True:
         os.system("clear")
@@ -143,8 +144,8 @@ def edit_task_menu(t_list):
 
     return_main()
 
-def remove_task(t_list):
-    task_list = t_list
+def remove_task():
+    task_list = open_task_list(list_file)
 
     os.system("clear")
     print_list()
@@ -165,5 +166,11 @@ def remove_task(t_list):
         print("Input out of acceptable range. Removal process aborted")
    
     return_main()
+
+def open_task_list(task_file):
+    with open(task_file, mode='r') as file:
+        list_data = json.load(file)
+    
+    return list_data
 
 main()  

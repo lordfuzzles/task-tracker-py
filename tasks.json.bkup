@@ -12,5 +12,11 @@
       "status": "Not Started",
       "dueDate": "11/20/2025"
     },
+    {
+      "id": 3,
+      "name": "Clean House",
+      "status": "Not started",
+      "dueDate": "11/30/2025"
+    }
   ]
 }
